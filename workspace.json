@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "projects": {
+    "restful-queue": "apps/restful-queue"
+  }
+}

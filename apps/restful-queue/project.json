@@ -1,0 +1,52 @@
+{
+  "root": "apps/restful-queue",
+  "sourceRoot": "apps/restful-queue/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/restful-queue",
+        "main": "apps/restful-queue/src/main.ts",
+        "tsConfig": "apps/restful-queue/tsconfig.app.json",
+        "assets": ["apps/restful-queue/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/restful-queue/src/environments/environment.ts",
+              "with": "apps/restful-queue/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:execute",
+      "options": {
+        "buildTarget": "restful-queue:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/restful-queue/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/restful-queue"],
+      "options": {
+        "jestConfig": "apps/restful-queue/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

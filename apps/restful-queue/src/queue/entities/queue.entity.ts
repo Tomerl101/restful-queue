@@ -1,9 +1,9 @@
 import { IQueue } from "../interfaces/queue.interface";
 
 export class Queue implements IQueue{
-  public id: number;
+  public id: string;
 
-  constructor(id: number, private queue: string[] = []) {
+  constructor(id: string, private queue: string[] = []) {
     this.id = id;
   }
 

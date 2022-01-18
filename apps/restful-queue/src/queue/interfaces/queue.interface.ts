@@ -1,5 +1,5 @@
 export interface IQueue {
-  id: number;
+  id: string;
   enqueue(item: string): void;
   dequeue(): string | undefined;
   getSnapshot(): string[];

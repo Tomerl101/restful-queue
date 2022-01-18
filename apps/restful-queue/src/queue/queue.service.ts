@@ -1,26 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { CreateQueueDto } from './dto/create-queue.dto';
-import { UpdateQueueDto } from './dto/update-queue.dto';
+import { Queue } from './entities/queue.entity';
 
 @Injectable()
 export class QueueService {
+  queue = new Queue(1);
+
   create(createQueueDto: CreateQueueDto) {
     return 'This action adds a new queue';
   }
 
-  findAll() {
-    return `This action returns all queue`;
+  enqueue(id: string, item: string) {
+    this.queue.enqueue(item);
+    return this.queue.getSnapshot();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} queue`;
+  dequeue(id: string) {
+    const item = this.queue.dequeue();
+    return item;
   }
 
-  update(id: number, updateQueueDto: UpdateQueueDto) {
-    return `This action updates a #${id} queue`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} queue`;
-  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Delete, Get, HttpException } from '@nestjs/common';
+import { Controller, Post, Put, Body, Param, Delete, Get, HttpException } from '@nestjs/common';
 import { QueueService } from './queue.service';
 @Controller('queue')
 export class QueueController {
@@ -15,7 +15,7 @@ export class QueueController {
     }
   }
 
-  @Get('/:name/snapshot')
+  @Get('/:name')
   snapshot(@Param('name') name: string) {
     try {
       return this.queueService.snapshot(name);
@@ -24,7 +24,7 @@ export class QueueController {
     }
   }
 
-  @Post('/:name/enqueue')
+  @Put('/:name')
   enqueue(@Param('name') name: string, @Body() item: string) {
     try{
       return this.queueService.enqueue(name, item);
@@ -33,7 +33,7 @@ export class QueueController {
     }
   }
 
-  @Delete('/:name/dequeue')
+  @Delete('/:name')
   dequeue(@Param('name') name: string) {
     try{
       return this.queueService.dequeue(name);

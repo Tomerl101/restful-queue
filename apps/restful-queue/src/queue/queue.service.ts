@@ -4,7 +4,7 @@ import { Queue } from './entities/queue.entity';
 
 @Injectable()
 export class QueueService {
-  queue = new Queue(1);
+  queue = new Queue("1");
 
   create(createQueueDto: CreateQueueDto) {
     return 'This action adds a new queue';
@@ -18,6 +18,10 @@ export class QueueService {
   dequeue(id: string) {
     const item = this.queue.dequeue();
     return item;
+  }
+
+  snapshot(id: string) {
+    return this.queue.getSnapshot();
   }
 
 }

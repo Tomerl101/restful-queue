@@ -1,30 +1,45 @@
-import { Controller, Post, Body, Param, Delete, Get } from '@nestjs/common';
+import { Controller, Post, Body, Param, Delete, Get, HttpException } from '@nestjs/common';
 import { QueueService } from './queue.service';
-import { CreateQueueDto } from './dto/create-queue.dto';
-@Controller('queue/:id')
+@Controller('queue')
 export class QueueController {
 
   constructor(private readonly queueService: QueueService) {}
 
   @Post()
-  create(@Body() createQueueDto: CreateQueueDto) {
-    return this.queueService.create(createQueueDto);
+  create(@Body('name') name: string) {
+    try {
+      this.queueService.create(name);
+      return {status: 'ok', message: 'Queue created'};
+    } catch (error) {
+      throw new HttpException(error.message, 409);
+    }
   }
 
-  @Get('/snapshot')
-  snapshot(@Param('id') id: string) {
-    return this.queueService.snapshot(id);
+  @Get('/:name/snapshot')
+  snapshot(@Param('name') name: string) {
+    try {
+      return this.queueService.snapshot(name);
+    } catch (error) {
+      throw new HttpException(error.message, 404);
+    }
   }
 
-  @Post('/enqueue')
-  enqueue(@Param('id') id: string, @Body() item: string) {
-    console.log(item);
-    return this.queueService.enqueue(id, item);
+  @Post('/:name/enqueue')
+  enqueue(@Param('name') name: string, @Body() item: string) {
+    try{
+      return this.queueService.enqueue(name, item);
+    } catch (error) {
+      throw new HttpException(error.message, 404);
+    }
   }
 
-  @Delete('/dequeue')
-  dequeue(@Param('id') id: string) {
-    return this.queueService.dequeue(id);
+  @Delete('/:name/dequeue')
+  dequeue(@Param('name') name: string) {
+    try{
+      return this.queueService.dequeue(name);
+    } catch (error) {
+      throw new HttpException(error.message, 404);
+    }
   }
 
 }

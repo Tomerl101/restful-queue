@@ -4,24 +4,46 @@ import { Queue } from './entities/queue.entity';
 
 @Injectable()
 export class QueueService {
-  queue = new Queue("1");
+  // Inmemory implementation for queues. should be separated to a separate service / module
+  queues = new Map<string, Queue>();
 
-  create(createQueueDto: CreateQueueDto) {
-    return 'This action adds a new queue';
+  create(name: string) {
+    const queue = this.queues.get(name);
+    if(queue){
+      throw new Error('Queue already exists');
+    }
+    const newQueue = new Queue(name);
+    this.queues.set(name, newQueue);
+    return newQueue;
   }
 
-  enqueue(id: string, item: string) {
-    this.queue.enqueue(item);
-    return this.queue.getSnapshot();
+  enqueue(name: string, item: string) {
+    const queue = this.queues.get(name);
+    if(!queue){
+      throw new Error('Queue not exists');
+    }
+
+    queue.enqueue(item);
+    return queue.getSnapshot();
   }
 
-  dequeue(id: string) {
-    const item = this.queue.dequeue();
+  dequeue(name: string) {
+    const queue = this.queues.get(name);
+    if(!queue){
+      throw new Error('Queue not exists');
+    }
+
+    const item = queue.dequeue();
     return item;
   }
 
-  snapshot(id: string) {
-    return this.queue.getSnapshot();
+  snapshot(name: string) {
+    const queue = this.queues.get(name);
+    if(!queue){
+      throw new Error('Queue not exists');
+    }
+
+    return queue.getSnapshot();
   }
 
 }
